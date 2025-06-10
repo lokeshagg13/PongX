@@ -1,0 +1,23 @@
+@layer theme {
+  :root,
+  :host {
+    --color-dark-blue: rgba(2,7,11,255);
+  }
+}
+
+@layer utilities {
+  .bg-dark-blue {
+    background: var(--color-dark-blue);
+  }
+  
+  .app-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .img-fit {
+    max-height: 200px;
+    object-fit: contain;
+  }
+}
