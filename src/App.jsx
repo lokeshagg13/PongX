@@ -1,4 +1,4 @@
-import GameCanvas from "./components/GameCanvas";
+import MainPanel from "./components/MainPanel";
 import HeaderImage from "./images/header.png";
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
       <div className="flex items-center justify-center mb-4">
         <img src={HeaderImage} alt="PongX" className="w-full img-fit" />
       </div>
-      <GameCanvas />
+      <MainPanel />
     </div>
   );
 }

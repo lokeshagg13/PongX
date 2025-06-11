@@ -3,52 +3,59 @@ import NightSky from "./nighSky";
 import Paddle from "./paddle";
 import Ball from "./ball";
 
+let game;
+
 class Game {
-    constructor(canvas) {
-        this.canvas = canvas;
+    constructor(mainCanvas, scoreHandlers) {
+        this.mainCanvas = mainCanvas;
         this.frameDuration = 1000 / constants.TARGET_FPS;
+        this.manualOverride = false;
         this.keyState = {
             ArrowUp: false,
             ArrowDown: false,
-        }
+            w: false,
+            s: false,
+        };
         this.leftPaddle = null;
         this.rightPaddle = null;
         this.ball = null;
         this.nightSky = null;
+        this.incrementLeftScore = scoreHandlers.incrementLeftPlayerScore;
+        this.incrementRightScore = scoreHandlers.incrementRightPlayerScore;
     }
 
     resizeGameObjects() {
-        const canvasPadding = this.canvas.width * constants.SPACING.PADDING_PERC;
-        const paddleWidth = this.canvas.width * constants.SIZING.PADDLE_WIDTH_PERC;
-        const paddleHeight = this.canvas.height * constants.SIZING.PADDLE_HEIGHT_PERC;
-        const paddleVelocity = this.canvas.height * constants.PADDLE_VELOCITY_PERC;
-        const ballRadius = this.canvas.height * constants.SIZING.BALL_RADIUS_PERC;
+        const canvasPadding = this.mainCanvas.width * constants.SPACING.PADDING_PERC;
+        const paddleWidth = this.mainCanvas.width * constants.SIZING.PADDLE_WIDTH_PERC;
+        const paddleHeight = this.mainCanvas.height * constants.SIZING.PADDLE_HEIGHT_PERC;
+        const paddleVelocity = this.mainCanvas.height * constants.PADDLE_VELOCITY_PERC;
+        const ballRadius = this.mainCanvas.height * constants.SIZING.BALL_RADIUS_PERC;
 
         const leftPaddleX = canvasPadding + paddleWidth / 2;
         const leftPaddleY = this.leftPaddle ?
-            this.leftPaddle.y * this.leftPaddle.yRatio * this.canvas.height :
-            this.canvas.height / 2;
-        const rightPaddleX = this.canvas.width - canvasPadding - paddleWidth / 2;
+            this.leftPaddle.y * this.leftPaddle.yRatio * this.mainCanvas.height :
+            this.mainCanvas.height / 2;
+        const rightPaddleX = this.mainCanvas.width - canvasPadding - paddleWidth / 2;
         const rightPaddleY = this.rightPaddle ?
-            this.rightPaddle.y * this.rightPaddle.yRatio * this.canvas.height :
-            this.canvas.height / 2;
+            this.rightPaddle.y * this.rightPaddle.yRatio * this.mainCanvas.height :
+            this.mainCanvas.height / 2;
         const ballX = this.ball ?
-            this.ball.x * this.ball.xRatio * this.canvas.width :
-            this.canvas.width / 2;
+            this.ball.x * this.ball.xRatio * this.mainCanvas.width :
+            this.mainCanvas.width / 2;
         const ballY = this.ball ?
-            this.ball.y * this.ball.yRatio * this.canvas.height :
-            this.canvas.height / 2;
+            this.ball.y * this.ball.yRatio * this.mainCanvas.height :
+            this.mainCanvas.height / 2;
         const ballVelocityX = this.ball ?
-            this.ball.velocityX * this.ball.xRatio * this.canvas.width :
-            constants.BALL_VELOCITY_X_PERC * this.canvas.width;
+            this.ball.velocityX * this.ball.xRatio * this.mainCanvas.width :
+            constants.BALL_VELOCITY_X_PERC * this.mainCanvas.width;
         const ballVelocityY = this.ball ?
-            this.ball.velocityY * this.ball.yRatio * this.canvas.height :
+            this.ball.velocityY * this.ball.yRatio * this.mainCanvas.height :
             0;
 
         this.leftPaddle = new Paddle(
             leftPaddleX,
             leftPaddleY,
-            1 / this.canvas.height,
+            1 / this.mainCanvas.height,
             paddleWidth,
             paddleHeight,
             paddleVelocity,
@@ -56,7 +63,7 @@ class Game {
         this.rightPaddle = new Paddle(
             rightPaddleX,
             rightPaddleY,
-            1 / this.canvas.height,
+            1 / this.mainCanvas.height,
             paddleWidth,
             paddleHeight,
             paddleVelocity
@@ -64,33 +71,34 @@ class Game {
         this.ball = new Ball(
             ballX,
             ballY,
-            1 / this.canvas.width,
-            1 / this.canvas.height,
+            1 / this.mainCanvas.width,
+            1 / this.mainCanvas.height,
             ballRadius,
             ballVelocityX,
             ballVelocityY
         );
         this.nightSky = new NightSky(
             20,
-            this.canvas.width,
-            this.canvas.height,
+            this.mainCanvas.width,
+            this.mainCanvas.height,
         )
     }
 
     handleCollisions() {
         // Collision with ceiling and floor
         if (
-            (this.ball.y + this.ball.radius >= this.canvas.height) ||
+            (this.ball.y + this.ball.radius >= this.mainCanvas.height) ||
             (this.ball.y - this.ball.radius <= 0)
         ) {
             this.ball.velocityY *= -1;
         }
 
+        // Collision with paddles
         if (this.ball.velocityX < 0) {
             // Check for left paddle collision - if the y coordinate of ball lie between the y coordinates of upper and lower edge of the paddle
             if (
-                this.ball.y >= (this.leftPaddle.y - this.leftPaddle.height / 2) &&
-                this.ball.y <= (this.leftPaddle.y + this.leftPaddle.height / 2)
+                (this.ball.y + this.ball.radius) >= (this.leftPaddle.y - this.leftPaddle.height / 2) &&
+                (this.ball.y - this.ball.radius) <= (this.leftPaddle.y + this.leftPaddle.height / 2)
             ) {
                 // Then, we check if the leftmost point on ball's circumference lie on or to the left of the paddle
                 if (
@@ -102,15 +110,15 @@ class Game {
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.leftPaddle.y - this.ball.y;
-                    const reductionFactor = (this.leftPaddle.height / 2) / (constants.BALL_VELOCITY_Y_MAX_PERC * this.canvas.height);
+                    const reductionFactor = (this.leftPaddle.height / 2) / (constants.BALL_VELOCITY_Y_MAX_PERC * this.mainCanvas.height);
                     this.ball.velocityY = -1 * differenceInY / reductionFactor;
                 }
             }
         } else {
             // Check for right paddle collision - if the y coordinate of ball lie between the y coordinates of upper and lower edge of the paddle
             if (
-                this.ball.y >= (this.rightPaddle.y - this.rightPaddle.height / 2) &&
-                this.ball.y <= (this.rightPaddle.y + this.rightPaddle.height / 2)
+                (this.ball.y + this.ball.radius) >= (this.rightPaddle.y - this.rightPaddle.height / 2) &&
+                (this.ball.y - this.ball.radius) <= (this.rightPaddle.y + this.rightPaddle.height / 2)
             ) {
                 // Then, we check if the rightmost point on ball's circumference lie on or to the right of the paddle
                 if (
@@ -122,44 +130,94 @@ class Game {
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.rightPaddle.y - this.ball.y;
-                    const reductionFactor = (this.rightPaddle.height / 2) / (constants.BALL_VELOCITY_Y_MAX_PERC * this.canvas.height);
+                    const reductionFactor = (this.rightPaddle.height / 2) / (constants.BALL_VELOCITY_Y_MAX_PERC * this.mainCanvas.height);
                     this.ball.velocityY = -1 * differenceInY / reductionFactor;
                 }
             }
         }
+
+        // Collision with left and right walls
+        if (this.ball.x < 0) {
+            this.incrementRightScore();
+            this.ball.reset();
+        } else if (this.ball.x > this.mainCanvas.width) {
+            this.incrementLeftScore();
+            this.ball.reset();
+        }
     }
 
     updateGameObjects() {
-        if (this.keyState.ArrowUp) {
+        // Update left paddle based on keys
+        if (this.keyState.w) {
             this.leftPaddle.moveUp();
         }
-        if (this.keyState.ArrowDown) {
+        if (this.keyState.s) {
             this.leftPaddle.moveDown();
         }
         this.leftPaddle.y = Math.max(
             this.leftPaddle.height / 2,
-            Math.min(this.canvas.height - this.leftPaddle.height / 2, this.leftPaddle.y)
+            Math.min(this.mainCanvas.height - this.leftPaddle.height / 2, this.leftPaddle.y)
         );
+
+        if (this.manualOverride) {
+            // Update right paddle based on keys
+            if (this.keyState.ArrowUp) {
+                this.rightPaddle.moveUp();
+            }
+            if (this.keyState.ArrowDown) {
+                this.rightPaddle.moveDown();
+            }
+        }
+        this.rightPaddle.y = Math.max(
+            this.rightPaddle.height / 2,
+            Math.min(this.mainCanvas.height - this.rightPaddle.height / 2, this.rightPaddle.y)
+        );
+
+        // Move the ball
         this.ball.move();
         this.handleCollisions();
     }
 
     draw() {
-        const ctx = this.canvas.getContext("2d");
-        // Clear canvas
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        const mainCtx = this.mainCanvas.getContext("2d");
+        // Clear mainCanvas
+        mainCtx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
         // Draw Night Sky
-        this.nightSky.draw(this.canvas);
+        this.nightSky.draw(this.mainCanvas);
 
         // Draw Paddles and Ball
-        this.leftPaddle.draw(this.canvas);
-        this.rightPaddle.draw(this.canvas);
-        this.ball.draw(this.canvas);
+        this.leftPaddle.draw(this.mainCanvas);
+        this.rightPaddle.draw(this.mainCanvas);
+        this.ball.draw(this.mainCanvas);
     }
 }
 
-export function startGame(canvas) {
-    let game = new Game(canvas);
+// Handle resizing
+function handleResize() {
+    game.resizeGameObjects();
+}
+
+// Handle key presses
+function handleKeyDown(e) {
+    e.preventDefault();
+    if (e.key in game.keyState) {
+        game.keyState[e.key] = true;
+    }
+}
+
+function handleKeyUp(e) {
+    e.preventDefault();
+    if (e.key in game.keyState) {
+        game.keyState[e.key] = false;
+    }
+}
+
+export function toggleManualOverride() {
+    game.manualOverride = !game.manualOverride;
+}
+
+export function startGame(mainCanvas, scoreHandlers) {
+    game = new Game(mainCanvas, scoreHandlers);
     let lastTime = performance.now();
     let animationFrameId;
 
@@ -176,26 +234,7 @@ export function startGame(canvas) {
     // Initialize and resize
     game.resizeGameObjects();
     animationFrameId = requestAnimationFrame(gameLoop);
-
-    // Handle resizing
-    const handleResize = () => {
-        game.resizeGameObjects();
-    };
     window.addEventListener("resize", handleResize);
-
-    // Handle key presses
-    const handleKeyDown = (e) => {
-        e.preventDefault();
-        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-            game.keyState[e.key] = true;
-        }
-    }
-    const handleKeyUp = (e) => {
-        e.preventDefault();
-        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-            game.keyState[e.key] = false;
-        }
-    }
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp)
 

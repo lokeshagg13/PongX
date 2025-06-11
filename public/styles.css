@@ -1,7 +1,7 @@
 @layer theme {
   :root,
   :host {
-    --color-dark-blue: rgba(2,7,11,255);
+    --color-dark-blue: rgba(2, 7, 11, 255);
   }
 }
 
@@ -9,7 +9,7 @@
   .bg-dark-blue {
     background: var(--color-dark-blue);
   }
-  
+
   .app-grid {
     display: flex;
     flex-direction: column;
@@ -19,5 +19,79 @@
   .img-fit {
     max-height: 200px;
     object-fit: contain;
+  }
+
+  .font-score {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-size: 3rem;
+    font-weight: 900;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+  }
+
+  .flex-box {
+    flex: 1 1 calc(50% - 1rem);
+    min-width: 200px;
+  }
+
+  @keyframes shake-animation {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    75% {
+      transform: translateX(-5px);
+    }
+  }
+
+  .shake {
+    animation: shake-animation 0.4s ease-in-out;
+  }
+
+  .rotate-0 {
+    transform: rotate(0deg);
+    transition: transform 0.5s ease;
+  }
+
+  .rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.5s ease;
+  }
+
+  .fade-in {
+    animation: fadeInTop 0.5s ease forwards;
+  }
+
+  @keyframes fadeInTop {
+    from {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  
+  @media (max-width: 600px) {
+    .flex-box {
+      flex: 1 1 100%;
+    }
+
+    .key-adjust {
+      max-width: 242px;
+    }
+
+    .sm\:justify-between {
+      justify-content: space-between;
+    }
   }
 }

@@ -1,12 +1,21 @@
 class Ball {
     constructor(x, y, xRatio, yRatio, radius, velocityX, velocityY) {
         this.x = x;
+        this.originalX = x;
         this.y = y;
+        this.originalY = y;
         this.xRatio = xRatio;
         this.yRatio = yRatio;
         this.radius = radius;
         this.velocityX = velocityX;
         this.velocityY = velocityY;
+    }
+
+    reset() {
+        this.x = this.originalX;
+        this.y = this.originalY;
+        this.velocityY = 0;
+        this.velocityX *= -1;
     }
 
     move() {
