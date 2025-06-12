@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DropdownIcon from "../../ui/dropdownIcon";
+import DropdownIcon from "../../ui/DropdownIcon";
 
 function GameInstructions({ expanded = false }) {
   const [isExpanded, setIsExpanded] = useState(expanded);

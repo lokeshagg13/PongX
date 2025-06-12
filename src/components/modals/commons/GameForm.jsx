@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from "react";
 import GameContext from "../../../store/gameContext";
 import constants from "../../../store/constants";
-import DropdownIcon from "../../ui/dropdownIcon";
+import DropdownIcon from "../../ui/DropdownIcon";
 
 function GameForm({ expanded = false, startText = "Start" }) {
   const gameContext = useContext(GameContext);

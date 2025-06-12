@@ -35,6 +35,53 @@
     min-width: 200px;
   }
 
+  .console-container {
+    position: relative;
+    width: 100px;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .console-btn {
+    position: absolute;
+    width: 100px;
+    height: 60px;
+    background-color: #007bff;
+    border: 2px solid #004aad;
+    border-radius: 100px 100px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+
+  .console-btn:active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .console-btn.up {
+    transform: rotate(0deg);
+    top: 0;
+  }
+
+  .console-btn.down {
+    transform: rotate(180deg);
+    bottom: 0;
+  }
+
+  .arrow {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+  }
+
   @keyframes shake-animation {
     0%,
     100% {
@@ -80,7 +127,6 @@
     }
   }
 
-  
   @media (max-width: 600px) {
     .flex-box {
       flex: 1 1 100%;

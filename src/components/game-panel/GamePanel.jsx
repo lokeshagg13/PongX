@@ -1,7 +1,13 @@
+import { useContext } from "react";
+
 import ScoreBoard from "./scoreboard/ScoreBoard";
 import GameCanvas from "./game-canvas/GameCanvas";
+import GameConsole from "../ui/GameConsole";
+import GameContext from "../../store/gameContext";
 
 function GamePanel() {
+  const gameContext = useContext(GameContext);
+
   return (
     <div className="flex flex-col items-center gap-5">
       {/* Scores */}
@@ -9,6 +15,9 @@ function GamePanel() {
 
       {/* Canvas */}
       <GameCanvas />
+
+      {/* Gaming Console */}
+      {gameContext.gameType !== "b/vs/b" && <GameConsole />}
 
       {/* Manual Override Button */}
       {/* <div className="flex w-full justify-end">
