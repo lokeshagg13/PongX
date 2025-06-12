@@ -1,4 +1,5 @@
 import constants from "../store/constants";
+import Countdown from "./countdown";
 import NightSky from "./nighSky";
 import Paddle from "./paddle";
 import Ball from "./ball";
@@ -216,27 +217,69 @@ export function toggleManualOverride() {
     game.manualOverride = !game.manualOverride;
 }
 
+export function movePaddle(which = "left", direction = "up") {
+    if (which === "left") {
+        if (direction === "up") {
+            game.leftPaddle.moveUp();
+        } else {
+            game.leftPaddle.moveDown();
+        }
+        game.leftPaddle.y = Math.max(
+            game.leftPaddle.height / 2,
+            Math.min(game.mainCanvas.height - game.leftPaddle.height / 2, game.leftPaddle.y)
+        );
+    }
+    else {
+        if (direction === "up") {
+            game.rightPaddle.moveUp();
+        } else {
+            game.rightPaddle.moveDown();
+        }
+        game.rightPaddle.y = Math.max(
+            game.rightPaddle.height / 2,
+            Math.min(game.mainCanvas.height - game.rightPaddle.height / 2, game.rightPaddle.y)
+        );
+    }
+}
+
 export function startGame(mainCanvas, scoreHandlers) {
     game = new Game(mainCanvas, scoreHandlers);
+    const countdown = new Countdown(3);
     let lastTime = performance.now();
     let animationFrameId;
 
-    function gameLoop(currentTime) {
-        const deltaTime = currentTime - lastTime;
-        if (deltaTime >= game.frameDuration) {
-            game.updateGameObjects();
-            game.draw();
-            lastTime = currentTime;
+    function startGameLoop() {
+        function gameLoop(currentTime) {
+            const deltaTime = currentTime - lastTime;
+            if (deltaTime >= game.frameDuration) {
+                game.updateGameObjects();
+                game.draw();
+                lastTime = currentTime;
+            }
+            animationFrameId = requestAnimationFrame(gameLoop);
         }
-        animationFrameId = requestAnimationFrame(gameLoop);
-    };
 
-    // Initialize and resize
+        game.resizeGameObjects();
+        animationFrameId = requestAnimationFrame(gameLoop);
+
+        window.addEventListener("resize", handleResize);
+        window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
+    }
+
+    function countdownLoop() {
+        if (countdown.count > 0) {
+            countdown.draw(mainCanvas);
+            countdown.decrementCount();
+            setTimeout(countdownLoop, 1000);
+        } else {
+            startGameLoop();
+        }
+    }
+
+    // Initialize and start countdown
     game.resizeGameObjects();
-    animationFrameId = requestAnimationFrame(gameLoop);
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp)
+    countdownLoop();
 
     // Cleanup
     return () => {
