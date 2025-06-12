@@ -167,10 +167,10 @@ class Game {
         // Collision with left and right walls
         if (this.ball.x < 0) {
             this.incrementRightScore();
-            this.ball.reset();
+            this.ball.reset(this.rightPaddle.x - this.rightPaddle.width - this.ball.radius, this.rightPaddle.y);
         } else if (this.ball.x > this.mainCanvas.width) {
             this.incrementLeftScore();
-            this.ball.reset();
+            this.ball.reset(this.leftPaddle.x + this.leftPaddle.width + this.ball.radius, this.leftPaddle.y);
         }
     }
 
