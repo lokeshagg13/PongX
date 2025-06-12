@@ -20,11 +20,13 @@ function GameCanvas() {
   }, []);
 
   return (
-    <canvas
-      id="main-canvas"
-      ref={gameContext.mainCanvasRef}
-      className="w-full border-2 border-white rounded-lg"
-    />
+    <div className="canvas-wrapper">
+      <canvas
+        id="main-canvas"
+        ref={gameContext.mainCanvasRef}
+        className="game-canvas"
+      />
+    </div>
   );
 }
 

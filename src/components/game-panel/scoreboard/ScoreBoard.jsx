@@ -14,18 +14,20 @@ function ScoreBoard() {
   }, [gameContext.leftPlayerScore, gameContext.rightPlayerScore]);
 
   return (
-    <div className="flex items-center justify-between w-full h-24">
-      <div className="flex flex-col items-center gap-5 pl-4">
-        <div className="text-white text-2xl">{gameContext.leftPlayerName}</div>
-        <div className="font-score text-white">
-          {gameContext.leftPlayerScore}
-        </div>
+    <div className="scoreboard-container">
+      {/* Left Player */}
+      <div className="player">
+        <div className="player-name">{gameContext.leftPlayerName}</div>
+        <div className="player-score">{gameContext.leftPlayerScore}</div>
       </div>
-      <div className="flex flex-col items-center gap-5 pr-4">
-        <div className="text-white text-2xl">{gameContext.rightPlayerName}</div>
-        <div className="font-score text-white">
-          {gameContext.rightPlayerScore}
-        </div>
+
+      {/* Divider */}
+      <div className="divider">VS</div>
+
+      {/* Right Player */}
+      <div className="player">
+        <div className="player-name">{gameContext.rightPlayerName}</div>
+        <div className="player-score">{gameContext.rightPlayerScore}</div>
       </div>
     </div>
   );

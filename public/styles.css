@@ -35,6 +35,67 @@
     min-width: 200px;
   }
 
+  .canvas-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border-radius: 16px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+  }
+
+  .game-canvas {
+    display: block;
+    background: radial-gradient(circle, #0f172a, #1e293b);
+    border: 2px solid #94a3b8;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    width: 100%;
+  }
+
+  .scoreboard-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 6rem;
+    padding: 1rem;
+  }
+
+  .player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Player Name */
+  .player-name {
+    color: #ffffff; 
+    font-size: 1.25rem; 
+    font-weight: bold;
+    text-transform: uppercase; 
+    letter-spacing: 1.5px;
+  }
+
+  /* Player Score */
+  .player-score {
+    color: #facc15; 
+    font-size: 2rem; 
+    font-weight: 800; 
+    font-family: "Courier New", Courier, monospace; 
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Divider ("VS") */
+  .divider {
+    color: #9ca3af; 
+    font-size: 1.5rem; 
+    font-weight: bold;
+    padding: 0 1rem; 
+  }
+
   .console-container {
     position: relative;
     width: 100px;
