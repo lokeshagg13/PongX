@@ -1,13 +1,34 @@
-import { useRef, useContext } from "react";
-import { movePaddle, stopPaddle } from "../../game/gameLoop";
-import GameContext from "../../store/gameContext";
-import { useEffect } from "react";
+import { useRef, useContext, useEffect } from "react";
+import { movePaddle, stopPaddle } from "../../../game/gameLoop";
+import GameContext from "../../../store/gameContext";
 
 function GameConsole() {
   const intervalId = useRef(null);
   const gameContext = useContext(GameContext);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!gameContext.countdownRunning) {
+        if (gameContext.gameStatus === "running") {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            gameContext.handlePauseGame();
+          }
+        } else if (gameContext.gameStatus === "paused") {
+          if (e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            gameContext.handleResumeGame();
+          }
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [gameContext]);
 
   const handleStart = (whichPaddle, direction) => {
     movePaddle(whichPaddle, direction); // Immediate movement

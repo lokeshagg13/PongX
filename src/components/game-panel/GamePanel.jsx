@@ -1,6 +1,6 @@
 import ScoreBoard from "./scoreboard/ScoreBoard";
 import GameCanvas from "./game-canvas/GameCanvas";
-import GameConsole from "../ui/GameConsole";
+import GameConsole from "./game-console/GameConsole";
 
 function GamePanel() {
   return (

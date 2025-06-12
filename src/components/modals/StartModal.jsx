@@ -8,11 +8,11 @@ function StartModal() {
       <div className="flex flex-col gap-5 bg-white p-6 rounded-lg text-center">
         <img src={HeaderImage} alt="PongX" className="w-full img-fit" />
 
-        {/* Game Instructions */}
-        <GameInstructions expanded={true} />
-
         {/* Game Form and Control */}
         <GameForm expanded={true} startText="Start" />
+
+        {/* Game Instructions */}
+        <GameInstructions expanded={true} />
       </div>
     </div>
   );

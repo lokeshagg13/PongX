@@ -899,6 +899,9 @@
   .text-center {
     text-align: center;
   }
+  .text-last-center {
+    text-align-last: center;
+  }
   .text-right {
     text-align: right;
   }

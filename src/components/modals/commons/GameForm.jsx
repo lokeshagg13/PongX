@@ -91,7 +91,7 @@ function GameForm({ expanded = false, startText = "Start" }) {
               <select
                 id="gameType"
                 name="gameType"
-                className="bg-gray-800 text-white text-center border border-gray-600 rounded px-3 py-1 w-full text-md h-8"
+                className="bg-gray-800 text-white text-center text-last-center border border-gray-600 rounded px-3 py-1 w-full text-md h-8"
                 value={gameType}
                 onChange={(e) => setGameType(e.target.value)}
               >
@@ -133,7 +133,6 @@ function GameForm({ expanded = false, startText = "Start" }) {
                       "leftPlayerError"
                     )
                   }
-                  autoFocus
                 />
               </div>
               <div className="flex items-center w-full justify-between">

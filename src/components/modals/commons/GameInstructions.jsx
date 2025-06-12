@@ -7,7 +7,7 @@ function GameInstructions({ expanded = false }) {
   return (
     <div className="flex flex-col items-center mt-8">
       <div className="flex items-center justify-center gap-10">
-        <h2 className="text-xl font-bold">Key Controls</h2>
+        <h2 className="text-xl font-bold">Keyboard Controls</h2>
         <button onClick={() => setIsExpanded((prev) => !prev)}>
           <DropdownIcon className={isExpanded ? "rotate-180" : "rotate-0"} />
         </button>

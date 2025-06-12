@@ -11,8 +11,8 @@ function handleResize() {
 
 // Handle key press
 function handleKeyDown(e) {
-    e.preventDefault();
     if (e.key in game.keyState) {
+        e.preventDefault();
         game.keyState[e.key] = true;
         game.buttonState[constants.KEYS_MAP[e.key]] = false;
     }
@@ -20,8 +20,8 @@ function handleKeyDown(e) {
 
 // Handle key up
 function handleKeyUp(e) {
-    e.preventDefault();
     if (e.key in game.keyState) {
+        e.preventDefault();
         game.keyState[e.key] = false;
     }
 }
@@ -97,7 +97,7 @@ export function initGame(mainCanvas, gameType, stateHandlers) {
             isPaused = true;
             cancelAnimationFrame(animationFrameId);
             window.removeEventListener("resize", handleResize);
-            window.removeEventListener("keydown", handleResize);
+            window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         }
     }
@@ -115,7 +115,7 @@ export function initGame(mainCanvas, gameType, stateHandlers) {
     function endGame() {
         cancelAnimationFrame(animationFrameId);
         window.removeEventListener("resize", handleResize);
-        window.removeEventListener("keydown", handleResize);
+        window.removeEventListener("keydown", handleKeyDown);
         window.removeEventListener("keyup", handleKeyUp);
     }
 
