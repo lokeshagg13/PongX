@@ -16,6 +16,16 @@ const constants = {
         PADDLE_HEIGHT_PERC: 0.15,
         BALL_RADIUS_PERC: 0.02,
     },
+    KEYS_MAP: {
+        'w': 'leftUp',
+        's': 'leftDown',
+        'ArrowUp': 'rightUp',
+        'ArrowDown': 'rightDown',
+        'leftDown': 's',
+        'leftUp': 'w',
+        'rightDown': 'ArrowDown',
+        'rightUp': 'ArrowUp'
+    },
     GAME_TYPES: [
         "u/vs/b",
         "u/vs/u",

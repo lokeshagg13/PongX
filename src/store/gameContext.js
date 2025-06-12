@@ -43,7 +43,7 @@ export function GameContextProvider(props) {
         if (gameCleanupRef.current) {
             gameCleanupRef.current();
         }
-        const cleanup = startGame(mainCanvasRef.current, {
+        const cleanup = startGame(mainCanvasRef.current, gameType, {
             incrementLeftPlayerScore,
             incrementRightPlayerScore,
         });

@@ -1,13 +1,12 @@
 import { useRef, useContext } from "react";
-import { movePaddle } from "../../game/gameLoop";
+import { movePaddle, stopPaddle } from "../../game/gameLoop";
 import GameContext from "../../store/gameContext";
 
 function GameConsole() {
   const intervalId = useRef(null);
   const gameContext = useContext(GameContext);
 
-  const handleStart = (e, whichPaddle, direction) => {
-    e.preventDefault();
+  const handleStart = (whichPaddle, direction) => {
     movePaddle(whichPaddle, direction); // Immediate movement
     intervalId.current = setInterval(
       () => movePaddle(whichPaddle, direction),
@@ -15,10 +14,11 @@ function GameConsole() {
     ); // Continuous movement
   };
 
-  const handleEnd = () => {
+  const handleEnd = (whichPaddle) => {
     if (intervalId.current) {
       clearInterval(intervalId.current);
       intervalId.current = null;
+      stopPaddle(whichPaddle);
     }
   };
 
@@ -28,11 +28,11 @@ function GameConsole() {
         {/* Up Button */}
         <div
           className="console-btn up"
-          onMouseDown={(e) => handleStart(e, "left", "up")}
-          onTouchStart={(e) => handleStart(e, "left", "up")}
-          onMouseUp={handleEnd}
-          onMouseLeave={handleEnd}
-          onTouchEnd={handleEnd}
+          onMouseDown={() => handleStart("left", "up")}
+          onTouchStart={() => handleStart("left", "up")}
+          onMouseUp={() => handleEnd("left")}
+          onMouseLeave={() => handleEnd("left")}
+          onTouchEnd={() => handleEnd("left")}
           onContextMenu={(e) => e.preventDefault()}
         >
           <span className="arrow">▲</span>
@@ -41,11 +41,11 @@ function GameConsole() {
         {/* Down Button */}
         <div
           className="console-btn down"
-          onMouseDown={(e) => handleStart(e, "left", "down")}
-          onTouchStart={(e) => handleStart(e, "left", "down")}
-          onMouseUp={handleEnd}
-          onMouseLeave={handleEnd}
-          onTouchEnd={handleEnd}
+          onMouseDown={(e) => handleStart("left", "down")}
+          onTouchStart={(e) => handleStart("left", "down")}
+          onMouseUp={() => handleEnd("left")}
+          onMouseLeave={() => handleEnd("left")}
+          onTouchEnd={() => handleEnd("left")}
           onContextMenu={(e) => e.preventDefault()}
         >
           <span className="arrow">▲</span>
@@ -57,11 +57,11 @@ function GameConsole() {
           {/* Up Button */}
           <div
             className="console-btn up"
-            onMouseDown={(e) => handleStart(e, "right", "up")}
-            onTouchStart={(e) => handleStart(e, "right", "up")}
-            onMouseUp={handleEnd}
-            onMouseLeave={handleEnd}
-            onTouchEnd={handleEnd}
+            onMouseDown={(e) => handleStart("right", "up")}
+            onTouchStart={(e) => handleStart("right", "up")}
+            onMouseUp={() => handleEnd("right")}
+            onMouseLeave={() => handleEnd("right")}
+            onTouchEnd={() => handleEnd("right")}
             onContextMenu={(e) => e.preventDefault()}
           >
             <span className="arrow">▲</span>
@@ -70,11 +70,11 @@ function GameConsole() {
           {/* Down Button */}
           <div
             className="console-btn down"
-            onMouseDown={(e) => handleStart(e, "right", "down")}
-            onTouchStart={(e) => handleStart(e, "right", "down")}
-            onMouseUp={handleEnd}
-            onMouseLeave={handleEnd}
-            onTouchEnd={handleEnd}
+            onMouseDown={(e) => handleStart("right", "down")}
+            onTouchStart={(e) => handleStart("right", "down")}
+            onMouseUp={() => handleEnd("right")}
+            onMouseLeave={() => handleEnd("right")}
+            onTouchEnd={() => handleEnd("right")}
             onContextMenu={(e) => e.preventDefault()}
           >
             <span className="arrow">▲</span>
