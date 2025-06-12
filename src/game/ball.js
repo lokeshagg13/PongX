@@ -1,5 +1,5 @@
 class Ball {
-    constructor(x, y, xRatio, yRatio, radius, velocityX, velocityY) {
+    constructor(x, y, xRatio, yRatio, radius, velocityX, velocityY, incVelocity, maxVelocity) {
         this.x = x;
         this.originalX = x;
         this.y = y;
@@ -9,18 +9,33 @@ class Ball {
         this.radius = radius;
         this.velocityX = velocityX;
         this.velocityY = velocityY;
+        this.maxVelocity = maxVelocity;
+        this.incVelocity = incVelocity;
+        this.originalVelocityX = velocityX;
     }
 
     reset() {
         this.x = this.originalX;
         this.y = this.originalY;
         this.velocityY = 0;
-        this.velocityX *= -1;
+        this.velocityX = -1 * Math.sign(this.velocityX) * Math.abs(this.originalVelocityX);
     }
 
     move() {
         this.x += this.velocityX;
         this.y += this.velocityY;
+    }
+
+    accelerate() {
+        this.velocityX = Math.min(
+            Math.abs(this.velocityX * (1 + this.incVelocity)),
+            this.maxVelocity
+        ) * Math.sign(this.velocityX);
+        this.velocityY = Math.min(
+            Math.abs(this.velocityY * (1 + this.incVelocity)),
+            this.maxVelocity
+        ) * Math.sign(this.velocityY);
+
     }
 
     draw(canvas) {

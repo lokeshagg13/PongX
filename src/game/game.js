@@ -38,6 +38,9 @@ class Game {
             this.paddleMovementControl.left = "bot"
         }
 
+        // Ball Velocity Controls
+        this.paddleHitCount = 0;
+
         // Score based functions
         this.incrementLeftScore = scoreHandlers.incrementLeftPlayerScore;
         this.incrementRightScore = scoreHandlers.incrementRightPlayerScore;
@@ -70,6 +73,8 @@ class Game {
         const ballVelocityY = this.ball ?
             this.ball.velocityY * this.ball.yRatio * this.mainCanvas.height :
             0;
+        const incBallVelocity = constants.BALL_VELOCITY_INC_PERC * this.mainCanvas.width;
+        const maxBallVelocity = constants.BALL_VELOCITY_MAX_PERC * this.mainCanvas.width;
 
         this.leftPaddle = new Paddle(
             leftPaddleX,
@@ -94,7 +99,9 @@ class Game {
             1 / this.mainCanvas.height,
             ballRadius,
             ballVelocityX,
-            ballVelocityY
+            ballVelocityY,
+            incBallVelocity,
+            maxBallVelocity
         );
         this.nightSky = new NightSky(
             20,
@@ -126,10 +133,11 @@ class Game {
                     )
                 ) {
                     this.ball.velocityX *= -1;
+                    this.ball.accelerate();
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.leftPaddle.y - this.ball.y;
-                    const reductionFactor = (this.leftPaddle.height / 2) / (constants.BALL_VELOCITY_Y_MAX_PERC * this.mainCanvas.height);
+                    const reductionFactor = (this.leftPaddle.height / 2) / (constants.BALL_VELOCITY_Y_PERC * this.mainCanvas.height);
                     this.ball.velocityY = -1 * differenceInY / reductionFactor;
                 }
             }
@@ -146,10 +154,11 @@ class Game {
                     )
                 ) {
                     this.ball.velocityX *= -1;
+                    this.ball.accelerate();
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.rightPaddle.y - this.ball.y;
-                    const reductionFactor = (this.rightPaddle.height / 2) / (constants.BALL_VELOCITY_Y_MAX_PERC * this.mainCanvas.height);
+                    const reductionFactor = (this.rightPaddle.height / 2) / (constants.BALL_VELOCITY_Y_PERC * this.mainCanvas.height);
                     this.ball.velocityY = -1 * differenceInY / reductionFactor;
                 }
             }

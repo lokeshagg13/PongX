@@ -16,8 +16,7 @@ const GameContext = createContext({
     handleStartGame: (leftName, rightName, gameType) => { },
     incrementLeftPlayerScore: () => { },
     incrementRightPlayerScore: () => { },
-    setLeftPlayerWinner: () => { },
-    setRightPlayerWinner: () => { },
+    handleEndGame: (winner) => { },
 });
 
 export function GameContextProvider(props) {
@@ -58,14 +57,12 @@ export function GameContextProvider(props) {
         setRightPlayerScore((prevScore) => prevScore + 1);
     }
 
-    function setLeftPlayerWinner() {
+    function handleEndGame(winner) {
+        if (gameCleanupRef.current) {
+            gameCleanupRef.current();
+        }
         setGameStatus("completed");
-        setWinner(leftPlayerName);
-    }
-
-    function setRightPlayerWinner() {
-        setGameStatus("completed");
-        setWinner(rightPlayerName);
+        setWinner(winner === "left" ? leftPlayerName : rightPlayerName);
     }
 
     const currentGameContext = {
@@ -81,8 +78,7 @@ export function GameContextProvider(props) {
         handleStartGame,
         incrementLeftPlayerScore,
         incrementRightPlayerScore,
-        setLeftPlayerWinner,
-        setRightPlayerWinner
+        handleEndGame    
     };
 
     return (

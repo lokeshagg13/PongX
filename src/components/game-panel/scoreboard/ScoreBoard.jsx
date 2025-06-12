@@ -7,9 +7,9 @@ function ScoreBoard() {
 
   useEffect(() => {
     if (gameContext.leftPlayerScore >= constants.WINNING_SCORE)
-      gameContext.setLeftPlayerWinner();
+      gameContext.handleEndGame("left");
     if (gameContext.rightPlayerScore >= constants.WINNING_SCORE)
-      gameContext.setRightPlayerWinner();
+      gameContext.handleEndGame("right");
     // eslint-disable-next-line
   }, [gameContext.leftPlayerScore, gameContext.rightPlayerScore]);
 
