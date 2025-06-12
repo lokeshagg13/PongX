@@ -44,6 +44,13 @@ class Game {
         // Score based functions
         this.incrementLeftScore = scoreHandlers.incrementLeftPlayerScore;
         this.incrementRightScore = scoreHandlers.incrementRightPlayerScore;
+
+        // Audios
+        this.hitSound = new Audio(`${process.env.PUBLIC_URL}/audios/hit.mp3`);
+        this.hitSound.volume = 0.5;
+        this.scoreSound = new Audio(`${process.env.PUBLIC_URL}/audios/score.mp3`
+        );
+        this.scoreSound.volume = 0.5;
     }
 
     resizeGameObjects() {
@@ -134,6 +141,7 @@ class Game {
                 ) {
                     this.ball.velocityX *= -1;
                     this.ball.accelerate();
+                    this.hitSound.play();
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.leftPaddle.y - this.ball.y;
@@ -155,6 +163,7 @@ class Game {
                 ) {
                     this.ball.velocityX *= -1;
                     this.ball.accelerate();
+                    this.hitSound.play();
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.rightPaddle.y - this.ball.y;
@@ -167,9 +176,11 @@ class Game {
         // Collision with left and right walls
         if (this.ball.x < 0) {
             this.incrementRightScore();
+            this.scoreSound.play();
             this.ball.reset(this.rightPaddle.x - this.rightPaddle.width - this.ball.radius, this.rightPaddle.y);
         } else if (this.ball.x > this.mainCanvas.width) {
             this.incrementLeftScore();
+            this.scoreSound.play();
             this.ball.reset(this.leftPaddle.x + this.leftPaddle.width + this.ball.radius, this.leftPaddle.y);
         }
     }

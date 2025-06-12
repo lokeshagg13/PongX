@@ -72,28 +72,28 @@
 
   /* Player Name */
   .player-name {
-    color: #ffffff; 
-    font-size: 1.25rem; 
+    color: #ffffff;
+    font-size: 1.25rem;
     font-weight: bold;
-    text-transform: uppercase; 
+    text-transform: uppercase;
     letter-spacing: 1.5px;
   }
 
   /* Player Score */
   .player-score {
-    color: #facc15; 
-    font-size: 2rem; 
-    font-weight: 800; 
-    font-family: "Courier New", Courier, monospace; 
+    color: #facc15;
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: "Courier New", Courier, monospace;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   }
 
   /* Divider ("VS") */
   .divider {
-    color: #9ca3af; 
-    font-size: 1.5rem; 
+    color: #9ca3af;
+    font-size: 1.5rem;
     font-weight: bold;
-    padding: 0 1rem; 
+    padding: 0 1rem;
   }
 
   .console-container {
@@ -109,7 +109,8 @@
     position: absolute;
     width: 100px;
     height: 60px;
-    background-color: #007bff;
+    background: linear-gradient(145deg, #004aad, #007bff);
+    /* background-color: #007bff; */
     border: 2px solid #004aad;
     border-radius: 100px 100px 0 0;
     display: flex;
@@ -121,6 +122,8 @@
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease, transform 0.2s ease;
   }
 
   .console-btn.up {
@@ -134,57 +137,50 @@
   }
 
   .console-btn:not([aria-disabled="true"]):not(:active):hover {
-    background-color: #004aad;
+    background: linear-gradient(145deg, #003d7a, #005bb5);
   }
 
   .console-btn:not([aria-disabled="true"]):active {
-    background-color: rgba(0, 0, 0, 0.1);
+    background: linear-gradient(145deg, #003d7a, #005bb5);
+  }
+
+  .pause-btn,
+  .restart-btn {
+    position: absolute;
+    width: 100px;
+    height: 60px;
+    background: linear-gradient(145deg, #004aad, #007bff);
+    border: 2px solid #004aad;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 400;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
   }
 
   .pause-btn {
     top: 0;
-    position: absolute;
-    width: 100px;
-    height: 60px;
-    background-color: #007bff;
-    border: 2px solid #004aad;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 400;
-  }
-
-  .pause-btn:not(:disabled):hover {
-    background-color: #004aad;
   }
 
   .restart-btn {
     bottom: 0;
-    position: absolute;
-    width: 100px;
-    height: 60px;
-    background-color: #007bff;
-    border: 2px solid #004aad;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 400;
   }
 
+  .pause-btn:not(:disabled):hover,
   .restart-btn:not(:disabled):hover {
-    background-color: #004aad;
+    background: linear-gradient(145deg, #003d7a, #005bb5);
   }
 
   .arrow {
     font-size: 24px;
     color: white;
     font-weight: bold;
+    text-shadow: 1px 1px 2px black;
   }
 
   @keyframes shake-animation {
