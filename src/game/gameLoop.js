@@ -39,23 +39,29 @@ export function stopPaddle(whichPaddle = "left") {
 }
 
 // Start Game and Game Loop
-export function startGame(mainCanvas, gameType, scoreHandlers) {
-    game = new Game(mainCanvas, gameType, scoreHandlers);
+export function initGame(mainCanvas, gameType, stateHandlers) {
+    const { incrementLeftPlayerScore, incrementRightPlayerScore } = stateHandlers;
+    game = new Game(mainCanvas, gameType, {
+        incrementLeftPlayerScore, incrementRightPlayerScore
+    });
     const countdown = new Countdown(3);
 
     const frameDuration = 1000 / constants.TARGET_FPS;
     let lastTime = performance.now();
     let animationFrameId;
+    let isPaused = false;
 
     function startGameLoop() {
         function gameLoop(currentTime) {
-            const deltaTime = currentTime - lastTime;
-            if (deltaTime >= frameDuration) {
-                game.updateGameObjects();
-                game.draw();
-                lastTime = currentTime;
+            if (!isPaused) {
+                const deltaTime = currentTime - lastTime;
+                if (deltaTime >= frameDuration) {
+                    game.updateGameObjects();
+                    game.draw();
+                    lastTime = currentTime;
+                }
+                animationFrameId = requestAnimationFrame(gameLoop);
             }
-            animationFrameId = requestAnimationFrame(gameLoop);
         }
 
         game.resizeGameObjects();
@@ -72,19 +78,51 @@ export function startGame(mainCanvas, gameType, scoreHandlers) {
             countdown.decrementCount();
             setTimeout(countdownLoop, 1000);
         } else {
+            stateHandlers.toggleCountdownState();
             startGameLoop();
         }
     }
 
-    // Initialize and start countdown
-    game.resizeGameObjects();
-    countdownLoop();
+    // Start Game
+    function startGame() {
+        isPaused = false;
+        lastTime = performance.now();
+        stateHandlers.toggleCountdownState();
+        countdownLoop();
+    }
 
-    // Cleanup
-    return () => {
+    // Pause Game
+    function pauseGame() {
+        if (!isPaused) {
+            isPaused = true;
+            cancelAnimationFrame(animationFrameId);
+            window.removeEventListener("resize", handleResize);
+            window.removeEventListener("keydown", handleResize);
+            window.removeEventListener("keyup", handleKeyUp);
+        }
+    }
+
+    // Resume Game
+    function resumeGame() {
+        if (isPaused) {
+            isPaused = false;
+            lastTime = performance.now();
+            animationFrameId = requestAnimationFrame(startGameLoop);
+        }
+    }
+
+    // End Game
+    function endGame() {
         cancelAnimationFrame(animationFrameId);
         window.removeEventListener("resize", handleResize);
         window.removeEventListener("keydown", handleResize);
         window.removeEventListener("keyup", handleKeyUp);
-    };
+    }
+
+    return {
+        startGame,
+        pauseGame,
+        resumeGame,
+        endGame
+    }
 }

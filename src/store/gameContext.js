@@ -1,10 +1,11 @@
 import { createContext, useRef, useState } from "react";
 
-import { startGame } from "../game/gameLoop";
+import { initGame } from "../game/gameLoop";
 import constants from "./constants";
 
 const GameContext = createContext({
     gameStatus: null,
+    countdownRunning: false,
     gameType: null,
     leftPlayerName: null,
     rightPlayerName: null,
@@ -12,8 +13,10 @@ const GameContext = createContext({
     rightPlayerScore: 0,
     winner: null,
     mainCanvasRef: null,
-    gameCleanupRef: null,
     handleStartGame: (leftName, rightName, gameType) => { },
+    handlePauseGame: () => { },
+    handleResumeGame: () => { },
+    handleInterruptGame: () => { },
     incrementLeftPlayerScore: () => { },
     incrementRightPlayerScore: () => { },
     handleEndGame: (winner) => { },
@@ -21,6 +24,7 @@ const GameContext = createContext({
 
 export function GameContextProvider(props) {
     const [gameStatus, setGameStatus] = useState(null);
+    const [countdownRunning, setCountdownRunning] = useState(false);
     const [gameType, setGameType] = useState(constants.GAME_TYPES[0]);
     const [leftPlayerName, setLeftPlayerName] = useState("Player 1");
     const [rightPlayerName, setRightPlayerName] = useState("Player 2");
@@ -29,7 +33,9 @@ export function GameContextProvider(props) {
     const [winner, setWinner] = useState("Bot");
 
     const mainCanvasRef = useRef(null);
-    const gameCleanupRef = useRef(null);
+    const pauseGameFuncRef = useRef(null);
+    const resumeGameFuncRef = useRef(null);
+    const endGameFuncRef = useRef(null);
 
     function handleStartGame(leftName, rightName, gameType) {
         setGameStatus("running");
@@ -39,14 +45,18 @@ export function GameContextProvider(props) {
         if (leftName) setLeftPlayerName(leftName);
         if (rightName) setRightPlayerName(rightName);
         if (gameType && constants.GAME_TYPES.includes(gameType)) setGameType(gameType);
-        if (gameCleanupRef.current) {
-            gameCleanupRef.current();
+        if (endGameFuncRef.current) {
+            endGameFuncRef.current();
         }
-        const cleanup = startGame(mainCanvasRef.current, gameType, {
+        const { startGame, pauseGame, resumeGame, endGame } = initGame(mainCanvasRef.current, gameType, {
+            toggleCountdownState,
             incrementLeftPlayerScore,
             incrementRightPlayerScore,
         });
-        gameCleanupRef.current = cleanup;
+        pauseGameFuncRef.current = pauseGame;
+        resumeGameFuncRef.current = resumeGame;
+        endGameFuncRef.current = endGame;
+        startGame();
     }
 
     function incrementLeftPlayerScore() {
@@ -57,9 +67,34 @@ export function GameContextProvider(props) {
         setRightPlayerScore((prevScore) => prevScore + 1);
     }
 
+    function toggleCountdownState() {
+        setCountdownRunning(prev => !prev);
+    }
+
+    function handlePauseGame() {
+        setGameStatus("paused");
+        if (pauseGameFuncRef.current) {
+            pauseGameFuncRef.current();
+        }
+    }
+
+    function handleResumeGame() {
+        setGameStatus("running");
+        if (resumeGameFuncRef.current) {
+            resumeGameFuncRef.current();
+        }
+    }
+
+    function handleInterruptGame() {
+        if (endGameFuncRef.current) {
+            endGameFuncRef.current();
+        }
+        setGameStatus(null);
+    }
+
     function handleEndGame(winner) {
-        if (gameCleanupRef.current) {
-            gameCleanupRef.current();
+        if (endGameFuncRef.current) {
+            endGameFuncRef.current();
         }
         setGameStatus("completed");
         setWinner(winner === "left" ? leftPlayerName : rightPlayerName);
@@ -67,6 +102,7 @@ export function GameContextProvider(props) {
 
     const currentGameContext = {
         gameStatus,
+        countdownRunning,
         gameType,
         leftPlayerName,
         rightPlayerName,
@@ -74,11 +110,13 @@ export function GameContextProvider(props) {
         rightPlayerScore,
         winner,
         mainCanvasRef,
-        gameCleanupRef,
         handleStartGame,
+        handlePauseGame,
+        handleResumeGame,
+        handleInterruptGame,
         incrementLeftPlayerScore,
         incrementRightPlayerScore,
-        handleEndGame    
+        handleEndGame
     };
 
     return (

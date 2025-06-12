@@ -322,6 +322,9 @@
   .right-5\.25 {
     right: calc(var(--spacing) * 5.25);
   }
+  .z-0 {
+    z-index: unset;
+  }
   .z-10 {
     z-index: 10;
   }
@@ -996,6 +999,9 @@
   .text-white {
     color: var(--color-white);
   }
+  .text-wheat {
+    color: wheat;
+  }
   .text-red {
     color: red;
   }
@@ -1007,6 +1013,9 @@
   }
   .opacity-0 {
     opacity: 0%;
+  }
+  .opacity-50 {
+    opacity: 50%;
   }
   .opacity-100 {
     opacity: 100% !important;
@@ -1212,6 +1221,13 @@
   }
   .disabled-btn:disabled {
     opacity: 0.5;
+    border: none;
+    cursor: not-allowed;
+    background-color: var(--color-gray-400);
+  }
+  .disabled-area[aria-disabled="true"] {
+    opacity: 0.5;
+    border: none;
     cursor: not-allowed;
     background-color: var(--color-gray-400);
   }
