@@ -2,6 +2,7 @@ import constants from "../store/constants";
 import NightSky from "./objects/nighSky";
 import Paddle from "./objects/paddle";
 import Ball from "./objects/ball";
+import Bot from "./bot/bot";
 
 class Game {
     constructor(canvas, gameType, scoreHandlers) {
@@ -28,14 +29,21 @@ class Game {
             rightUp: false,
             rightDown: false
         }
-        this.paddleMovementControl = {
-            left: "user",
-            right: "bot"
-        }
+
+        this.paddleMovementControl = {}
         if (gameType === "u/vs/u") {
+            this.paddleMovementControl.left = "user"
             this.paddleMovementControl.right = "user"
         } else if (gameType === "b/vs/b") {
             this.paddleMovementControl.left = "bot"
+            this.paddleMovementControl.right = "bot"
+            this.leftPaddleBot = new Bot();
+            this.rightPaddleBot = new Bot();
+        } else {
+            this.paddleMovementControl.left = "user"
+            this.paddleMovementControl.right = "bot"
+            this.leftPaddleBot = null;
+            this.rightPaddleBot = new Bot();
         }
 
         // Score based functions
@@ -203,10 +211,12 @@ class Game {
 
     movePaddle(whichPaddle, direction) {
         const paddle = whichPaddle === "left" ? this.leftPaddle : this.rightPaddle;
+        const customVelocity = this.paddleMovementControl[whichPaddle] === "user" ? null : paddle.velocity / 2; // Smooth movement step
+
         if (direction === "up") {
-            paddle.moveUp();
-        } else {
-            paddle.moveDown();
+            paddle.moveUp(customVelocity);
+        } else if (direction === "down") {
+            paddle.moveDown(customVelocity);
         }
         let validMove = true;
         const lowerBound = paddle.height / 2;
@@ -235,6 +245,15 @@ class Game {
             }
         } else {
             // Update left paddle based on bot's logic
+            const leftBotInputs = [
+                this.leftPaddle.y,
+                Math.abs(this.leftPaddle.x - this.ball.x),
+                this.ball.y
+            ];
+            const decision = this.leftPaddleBot.decide(leftBotInputs);
+            if (decision !== null) {
+                this.movePaddle("left", decision);
+            }
         }
 
         if (this.paddleMovementControl.right === "user") {
@@ -253,6 +272,15 @@ class Game {
             }
         } else {
             // Update right paddle based on bot's logic
+            const rightBotInputs = [
+                this.rightPaddle.y,
+                Math.abs(this.rightPaddle.x - this.ball.x),
+                this.ball.y
+            ];
+            const decision = this.rightPaddleBot.decide(rightBotInputs);
+            if (decision !== null) {
+                this.movePaddle("right", decision);
+            }
         }
     }
 

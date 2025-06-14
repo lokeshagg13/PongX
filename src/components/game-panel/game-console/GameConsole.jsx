@@ -1,5 +1,5 @@
 import { useRef, useContext, useEffect } from "react";
-import { movePaddle, stopPaddle } from "../../../game/gameLoop";
+import { movePaddle, stopPaddle } from "../../../logic/gameLoop";
 import GameContext from "../../../store/gameContext";
 
 function GameConsole() {

@@ -1,6 +1,6 @@
 import { createContext, useRef, useState } from "react";
 
-import { initGame } from "../game/gameLoop";
+import { initGame } from "../logic/gameLoop";
 import constants from "./constants";
 
 const GameContext = createContext({

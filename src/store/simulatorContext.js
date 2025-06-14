@@ -1,5 +1,5 @@
 import { createContext, useRef, useState } from "react";
-import { runSimulation, resumeSimulation } from "../game/simulator/train";
+import { runSimulation, resumeSimulation } from "../logic/simulator/train";
 
 const SimulatorContext = createContext({
     simulatorStatus: null,

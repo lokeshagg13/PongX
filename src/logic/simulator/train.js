@@ -1,7 +1,7 @@
 import { GenomeBuilder, Population } from "neat-javascript";
 
-import config from "./config";
-import SimulatorGame from "./simulatorGame";
+import config from "../bot/config";
+import SimulatorGame from "./game";
 import constants from "../../store/constants";
 import { findAverageFitness, findAvgMatchDuration, findBestMatchDuration, saveBestGenome } from "./utils";
 
@@ -16,8 +16,8 @@ function movePaddlesAI(genome1, genome2, simulatorGame) {
     players.forEach(([genome, paddleObject, whichPaddle]) => {
         const output = genome.propagate([
             paddleObject.y,
-            simulatorGame.ball.y,
-            Math.abs(paddleObject.x - simulatorGame.ball.x)
+            Math.abs(paddleObject.x - simulatorGame.ball.x),
+            simulatorGame.ball.y
         ]);
         const decision = output.indexOf(Math.max(...output));
         let validMove = true;

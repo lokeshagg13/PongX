@@ -53,17 +53,21 @@ function GameForm({ type = "start", expanded = false }) {
   };
 
   const handleStart = () => {
-    if (leftPlayer.trim() && rightPlayer.trim()) {
+    const lp = leftPlayer.trim();
+    const rp = rightPlayer.trim();
+    const lpLower = lp.toLowerCase();
+    const rpLower = rp.toLowerCase();
+    if (lp && rp && lpLower !== rpLower) {
       gameContext.handleStartGame(
-        leftPlayer.trim(),
-        rightPlayer.trim(),
+        lp,
+        rp,
         gameType
       );
     } else {
-      if (!leftPlayer.trim()) {
+      if (!lp || (lpLower === rpLower)) {
         setInputError("leftPlayerError");
       }
-      if (!rightPlayer.trim()) {
+      if (!rp || (lpLower === rpLower)) {
         setInputError("rightPlayerError");
       }
     }

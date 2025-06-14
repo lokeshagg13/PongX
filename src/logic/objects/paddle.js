@@ -12,12 +12,14 @@ class Paddle {
         this.strokeColor = strokeColor;
     }
 
-    moveUp() {
-        this.y -= this.velocity;
+    moveUp(customVelocity = null) {
+        if (customVelocity) this.y -= customVelocity;
+        else this.y -= this.velocity;
     }
 
-    moveDown() {
-        this.y += this.velocity;
+    moveDown(customVelocity = null) {
+        if (customVelocity) this.y += customVelocity;
+        else this.y += this.velocity;
     }
 
     draw(canvas) {
