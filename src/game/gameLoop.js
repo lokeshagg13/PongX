@@ -1,5 +1,5 @@
 import constants from "../store/constants";
-import Countdown from "./countdown";
+import Countdown from "./objects/countdown";
 import Game from "./game";
 
 let game;
@@ -39,9 +39,9 @@ export function stopPaddle(whichPaddle = "left") {
 }
 
 // Start Game and Game Loop
-export function initGame(mainCanvas, gameType, stateHandlers) {
+export function initGame(gameCanvas, gameType, stateHandlers) {
     const { incrementLeftPlayerScore, incrementRightPlayerScore } = stateHandlers;
-    game = new Game(mainCanvas, gameType, {
+    game = new Game(gameCanvas, gameType, {
         incrementLeftPlayerScore, incrementRightPlayerScore
     });
     const countdown = new Countdown(3);
@@ -74,7 +74,7 @@ export function initGame(mainCanvas, gameType, stateHandlers) {
 
     function countdownLoop() {
         if (countdown.count > 0) {
-            countdown.draw(mainCanvas);
+            countdown.draw(gameCanvas);
             countdown.decrementCount();
             setTimeout(countdownLoop, 1000);
         } else {

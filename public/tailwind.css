@@ -890,6 +890,9 @@
   .pr-4 {
     padding-right: calc(var(--spacing) * 4);
   }
+  .underline {
+    text-decoration: underline;
+  }
   .text-justify {
     text-align: justify;
   }

@@ -103,13 +103,13 @@ function GameConsole() {
           {gameContext.gameStatus === "running" ? "Pause" : "Resume"}
         </button>
         <button
-          className={`restart-btn ${
+          className={`quit-btn ${
             gameContext.gameStatus === "paused" ? "z-100" : "z-0"
           } ${gameContext.countdownRunning ? "disabled-btn" : ""}`}
           onClick={() => gameContext.handleInterruptGame()}
           disabled={gameContext.countdownRunning}
         >
-          Restart
+          Quit
         </button>
       </div>
 

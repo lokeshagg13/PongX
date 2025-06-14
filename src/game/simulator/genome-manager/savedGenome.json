@@ -1,0 +1,201 @@
+{
+    "id": 534,
+    "nodeGenes": [
+        {
+            "id": 0,
+            "type": "INPUT"
+        },
+        {
+            "id": 3,
+            "type": "OUTPUT"
+        },
+        {
+            "id": 4,
+            "type": "OUTPUT"
+        },
+        {
+            "id": 5,
+            "type": "OUTPUT"
+        },
+        {
+            "id": 1,
+            "type": "INPUT"
+        },
+        {
+            "id": 2,
+            "type": "INPUT"
+        },
+        {
+            "id": 6,
+            "type": "BIAS"
+        },
+        {
+            "id": 18,
+            "type": "HIDDEN"
+        },
+        {
+            "id": 22,
+            "type": "HIDDEN"
+        },
+        {
+            "id": 25,
+            "type": "HIDDEN"
+        }
+    ],
+    "connectionGenes": [
+        {
+            "innovationNumber": 0,
+            "inNodeId": 0,
+            "outNodeId": 3,
+            "enabled": false,
+            "weight": -0.6722471629491866,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 1,
+            "inNodeId": 0,
+            "outNodeId": 4,
+            "enabled": true,
+            "weight": 1.6190361414852488,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 2,
+            "inNodeId": 0,
+            "outNodeId": 5,
+            "enabled": true,
+            "weight": -1.1188308719901867,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 3,
+            "inNodeId": 1,
+            "outNodeId": 3,
+            "enabled": true,
+            "weight": -0.25162700847315356,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 4,
+            "inNodeId": 1,
+            "outNodeId": 4,
+            "enabled": true,
+            "weight": -1.6029392407806318,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 5,
+            "inNodeId": 1,
+            "outNodeId": 5,
+            "enabled": false,
+            "weight": 1.2456613252037185,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 6,
+            "inNodeId": 2,
+            "outNodeId": 3,
+            "enabled": true,
+            "weight": 0.0866813500286665,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 7,
+            "inNodeId": 2,
+            "outNodeId": 4,
+            "enabled": true,
+            "weight": 0.19535508843808258,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 8,
+            "inNodeId": 2,
+            "outNodeId": 5,
+            "enabled": true,
+            "weight": 0.037563780680294645,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 9,
+            "inNodeId": 6,
+            "outNodeId": 3,
+            "enabled": true,
+            "weight": 1.330905973031288,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 10,
+            "inNodeId": 6,
+            "outNodeId": 4,
+            "enabled": true,
+            "weight": 0.6711895208613418,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 11,
+            "inNodeId": 6,
+            "outNodeId": 5,
+            "enabled": false,
+            "weight": 0.39891696400668464,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 34,
+            "inNodeId": 6,
+            "outNodeId": 18,
+            "enabled": true,
+            "weight": 0.796180879417637,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 35,
+            "inNodeId": 18,
+            "outNodeId": 5,
+            "enabled": true,
+            "weight": -0.34559526950492114,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 42,
+            "inNodeId": 18,
+            "outNodeId": 3,
+            "enabled": true,
+            "weight": 1.196457546492836,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 43,
+            "inNodeId": 0,
+            "outNodeId": 22,
+            "enabled": true,
+            "weight": 0.32047584780564187,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 44,
+            "inNodeId": 22,
+            "outNodeId": 3,
+            "enabled": true,
+            "weight": -1.216677429930383,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 51,
+            "inNodeId": 1,
+            "outNodeId": 25,
+            "enabled": true,
+            "weight": 1,
+            "recurrent": false
+        },
+        {
+            "innovationNumber": 52,
+            "inNodeId": 25,
+            "outNodeId": 5,
+            "enabled": true,
+            "weight": 1.2456613252037185,
+            "recurrent": false
+        }
+    ],
+    "fitness": 824,
+    "populationId": 0
+}

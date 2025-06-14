@@ -5,10 +5,10 @@ function GameCanvas() {
   const gameContext = useContext(GameContext);
 
   useEffect(() => {
-    const mainCanvas = gameContext.mainCanvasRef.current;
+    const gameCanvas = gameContext.gameCanvasRef.current;
     const resizeCanvas = () => {
-      mainCanvas.width = Math.min(window.innerWidth * 0.9, 2160);
-      mainCanvas.height = Math.min(window.innerHeight * 0.6, 1180);
+      gameCanvas.width = Math.min(window.innerWidth * 0.9, 2160);
+      gameCanvas.height = Math.min(window.innerHeight * 0.6, 1180);
 
       // reset the game
     };
@@ -23,7 +23,7 @@ function GameCanvas() {
     <div className="canvas-wrapper">
       <canvas
         id="main-canvas"
-        ref={gameContext.mainCanvasRef}
+        ref={gameContext.gameCanvasRef}
         className="game-canvas"
       />
     </div>

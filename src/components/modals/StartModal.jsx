@@ -9,7 +9,7 @@ function StartModal() {
         <img src={HeaderImage} alt="PongX" className="w-full img-fit" />
 
         {/* Game Form and Control */}
-        <GameForm expanded={true} startText="Start" />
+        <GameForm type="start" expanded={true} />
 
         {/* Game Instructions */}
         <GameInstructions expanded={true} />

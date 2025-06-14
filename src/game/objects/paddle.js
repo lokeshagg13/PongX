@@ -1,4 +1,4 @@
-import constants from "../store/constants";
+import constants from "../../store/constants";
 
 class Paddle {
     constructor(x, y, yRatio, width, height, velocity, fillColor = constants.COLORS.WHITE, strokeColor = constants.COLORS.BLACK) {

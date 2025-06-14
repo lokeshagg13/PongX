@@ -1,13 +1,12 @@
-import constants from "../store/constants";
-import NightSky from "./objects/nighSky";
-import Paddle from "./objects/paddle";
-import Ball from "./objects/ball";
+import constants from "../../store/constants";
+import NightSky from "../objects/nighSky";
+import Paddle from "../objects/paddle";
+import Ball from "../objects/ball";
 
-class Game {
-    constructor(canvas, gameType, scoreHandlers) {
+class SimulatorGame {
+    constructor(canvas) {
         // Basic Game Config
         this.canvas = canvas;
-        this.gameType = gameType;
 
         // Game Objects
         this.leftPaddle = null;
@@ -15,39 +14,13 @@ class Game {
         this.ball = null;
         this.nightSky = null;
 
-        // Paddle Movement Controls
-        this.keyState = {
-            w: false,
-            s: false,
-            ArrowUp: false,
-            ArrowDown: false,
-        };
-        this.buttonState = {
-            leftUp: false,
-            leftDown: false,
-            rightUp: false,
-            rightDown: false
-        }
-        this.paddleMovementControl = {
-            left: "user",
-            right: "bot"
-        }
-        if (gameType === "u/vs/u") {
-            this.paddleMovementControl.right = "user"
-        } else if (gameType === "b/vs/b") {
-            this.paddleMovementControl.left = "bot"
-        }
+        // Score (Collision with opponent's wall)
+        this.leftScore = 0;
+        this.rightScore = 0;
 
-        // Score based functions
-        this.incrementLeftScore = scoreHandlers.incrementLeftPlayerScore;
-        this.incrementRightScore = scoreHandlers.incrementRightPlayerScore;
-
-        // Audios
-        this.hitSound = new Audio(`${process.env.PUBLIC_URL}/audios/hit.mp3`);
-        this.hitSound.volume = 0.5;
-        this.scoreSound = new Audio(`${process.env.PUBLIC_URL}/audios/score.mp3`
-        );
-        this.scoreSound.volume = 0.5;
+        // Hits (Collision with one's paddle)
+        this.leftHits = 0;
+        this.rightHits = 0;
     }
 
     resizeGameObjects() {
@@ -65,8 +38,8 @@ class Game {
         const rightPaddleY = this.rightPaddle ?
             this.rightPaddle.y * this.rightPaddle.yRatio * this.canvas.height :
             this.canvas.height / 2;
-        const incBallVelocity = constants.BALL_VELOCITY_INC_PERC * this.canvas.width;
-        const maxBallVelocity = constants.BALL_VELOCITY_MAX_PERC * this.canvas.width;
+        const incBallVelocity = constants.SIMULATOR_BALL_VELOCITY_INC_PERC * this.canvas.width;
+        const maxBallVelocity = constants.SIMULATOR_BALL_VELOCITY_MAX_PERC * this.canvas.width;
         const ballX = this.ball ?
             this.ball.x * this.ball.xRatio * this.canvas.width :
             this.canvas.width / 2;
@@ -75,7 +48,7 @@ class Game {
             this.canvas.height / 2;
         const ballInitAngle = Ball.getRandomAngle(-30, 30, [0]);
         const ballInitDirection = Math.random() < 0.5 ? 1 : -1;
-        const ballInitVelocity = constants.BALL_VELOCITY_X_PERC * this.canvas.width;
+        const ballInitVelocity = constants.SIMULATOR_BALL_VELOCITY_X_PERC * this.canvas.width;
         const ballInitVelocityX = ballInitDirection * Math.abs(
             Math.cos(ballInitAngle) * ballInitVelocity
         );
@@ -122,6 +95,10 @@ class Game {
     }
 
     handleCollisions() {
+        // Track horizontal hits
+        this.leftHorizontalHits = this.leftHorizontalHits || 0;
+        this.rightHorizontalHits = this.rightHorizontalHits || 0;
+
         // Collision with ceiling and floor
         if (
             (this.ball.y + this.ball.radius >= this.canvas.height) ||
@@ -145,7 +122,7 @@ class Game {
                 ) {
                     this.ball.velocityX *= -1;
                     this.ball.accelerate();
-                    this.hitSound.play();
+                    this.leftHits += 1;
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.leftPaddle.y - this.ball.y;
@@ -167,7 +144,7 @@ class Game {
                 ) {
                     this.ball.velocityX *= -1;
                     this.ball.accelerate();
-                    this.hitSound.play();
+                    this.rightHits += 1;
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.rightPaddle.y - this.ball.y;
@@ -179,8 +156,7 @@ class Game {
 
         // Collision with left and right walls
         if (this.ball.x < 0) {
-            this.incrementRightScore();
-            this.scoreSound.play();
+            this.rightScore += 1;
             const newX = this.rightPaddle.x - this.rightPaddle.width / 2 - this.ball.radius;
             const newY = Ball.getRandomPosition(
                 this.rightPaddle.y - this.rightPaddle.height / 2,
@@ -189,8 +165,7 @@ class Game {
             );
             this.ball.reset(newX, newY);
         } else if (this.ball.x > this.canvas.width) {
-            this.incrementLeftScore();
-            this.scoreSound.play();
+            this.leftScore += 1;
             const newX = this.leftPaddle.x + this.leftPaddle.width / 2 + this.ball.radius;
             const newY = Ball.getRandomPosition(
                 this.leftPaddle.y - this.leftPaddle.height / 2,
@@ -218,47 +193,8 @@ class Game {
         return validMove;
     }
 
-    updatePaddles() {
-        if (this.paddleMovementControl.left === "user") {
-            // Update left paddle based on keys
-            if (
-                (this.keyState.w && !this.buttonState.leftUp) ||
-                (this.buttonState.leftUp && !this.keyState.w)
-            ) {
-                this.movePaddle("left", "up");
-            }
-            if (
-                (this.keyState.s && !this.buttonState.leftDown) ||
-                (this.buttonState.leftDown && !this.keyState.s)
-            ) {
-                this.movePaddle("left", "down");
-            }
-        } else {
-            // Update left paddle based on bot's logic
-        }
-
-        if (this.paddleMovementControl.right === "user") {
-            // Update right paddle based on keys
-            if (
-                (this.keyState.ArrowUp && !this.buttonState.rightUp) ||
-                (this.buttonState.rightUp && !this.keyState.ArrowUp)
-            ) {
-                this.movePaddle("right", "up");
-            }
-            if (
-                (this.keyState.ArrowDown && !this.buttonState.rightDown) ||
-                (this.buttonState.rightDown && !this.keyState.ArrowDown)
-            ) {
-                this.movePaddle("right", "down");
-            }
-        } else {
-            // Update right paddle based on bot's logic
-        }
-    }
-
     updateGameObjects() {
-        // Move paddles based on key presses or console button clicks
-        this.updatePaddles();
+        // No Paddle movements here as in simulation, they will be moved programmatically based on the decision of neural network
         // Move the ball
         this.ball.move();
         // Handle collision of ball with walls and paddles
@@ -279,4 +215,4 @@ class Game {
     }
 }
 
-export default Game;
+export default SimulatorGame;

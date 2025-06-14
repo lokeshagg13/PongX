@@ -2,9 +2,11 @@ import { useEffect, useContext, useState } from "react";
 import GameContext from "../../../store/gameContext";
 import constants from "../../../store/constants";
 import DropdownIcon from "../../ui/DropdownIcon";
+import SimulatorContext from "../../../store/simulatorContext";
 
-function GameForm({ expanded = false, startText = "Start" }) {
+function GameForm({ type = "start", expanded = false }) {
   const gameContext = useContext(GameContext);
+  const simulatorContext = useContext(SimulatorContext);
   const [isExpanded, setIsExpanded] = useState(expanded);
   const [gameType, setGameType] = useState(gameContext.gameType);
   const [leftPlayer, setLeftPlayer] = useState(gameContext.leftPlayerName);
@@ -73,7 +75,7 @@ function GameForm({ expanded = false, startText = "Start" }) {
       <div className="flex flex-col items-center mt-8">
         <div className="flex items-center justify-center gap-10">
           <h2 className="text-xl font-bold">
-            {startText === "Start" ? "Game Information" : "Review Game Info"}
+            {type === "start" ? "Game Information" : "Review Game Info"}
           </h2>
           <button onClick={() => setIsExpanded((prev) => !prev)}>
             <DropdownIcon className={isExpanded ? "rotate-180" : "rotate-0"} />
@@ -169,13 +171,26 @@ function GameForm({ expanded = false, startText = "Start" }) {
       </div>
 
       {/* Game Controls */}
-      <div className="flex flex-col items-center mt-8">
-        <button
-          className="bg-blue-600 w-32 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700"
-          onClick={handleStart}
-        >
-          {startText}
+      <div className="game-form flex justify-between items-center w-full mt-8 gap-8">
+        {type === "start" && (
+          <button
+            className="control-btn enter-simulator-btn"
+            onClick={() => simulatorContext.openSimulator()}
+          >
+            Enter Simulator
+          </button>
+        )}
+        <button className="control-btn start-game-btn" onClick={handleStart}>
+          {type === "start" ? "Start Game" : "Restart Game"}
         </button>
+        {type === "restart" && (
+          <button
+            className="control-btn quit-btn"
+            onClick={() => gameContext.handleInterruptGame()}
+          >
+            Quit Game
+          </button>
+        )}
       </div>
     </>
   );

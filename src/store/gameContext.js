@@ -12,7 +12,7 @@ const GameContext = createContext({
     leftPlayerScore: 0,
     rightPlayerScore: 0,
     winner: null,
-    mainCanvasRef: null,
+    gameCanvasRef: null,
     handleStartGame: (leftName, rightName, gameType) => { },
     handlePauseGame: () => { },
     handleResumeGame: () => { },
@@ -32,7 +32,7 @@ export function GameContextProvider(props) {
     const [rightPlayerScore, setRightPlayerScore] = useState(0);
     const [winner, setWinner] = useState("Bot");
 
-    const mainCanvasRef = useRef(null);
+    const gameCanvasRef = useRef(null);
     const pauseGameFuncRef = useRef(null);
     const resumeGameFuncRef = useRef(null);
     const endGameFuncRef = useRef(null);
@@ -47,8 +47,9 @@ export function GameContextProvider(props) {
         if (gameType && constants.GAME_TYPES.includes(gameType)) setGameType(gameType);
         if (endGameFuncRef.current) {
             endGameFuncRef.current();
+            endGameFuncRef.current = null;
         }
-        const { startGame, pauseGame, resumeGame, endGame } = initGame(mainCanvasRef.current, gameType, {
+        const { startGame, pauseGame, resumeGame, endGame } = initGame(gameCanvasRef.current, gameType, {
             toggleCountdownState,
             incrementLeftPlayerScore,
             incrementRightPlayerScore,
@@ -88,6 +89,7 @@ export function GameContextProvider(props) {
     function handleInterruptGame() {
         if (endGameFuncRef.current) {
             endGameFuncRef.current();
+            endGameFuncRef.current = null;
         }
         setGameStatus(null);
     }
@@ -95,6 +97,7 @@ export function GameContextProvider(props) {
     function handleEndGame(winner) {
         if (endGameFuncRef.current) {
             endGameFuncRef.current();
+            endGameFuncRef.current = null;
         }
         setGameStatus("completed");
         setWinner(winner === "left" ? leftPlayerName : rightPlayerName);
@@ -109,7 +112,7 @@ export function GameContextProvider(props) {
         leftPlayerScore,
         rightPlayerScore,
         winner,
-        mainCanvasRef,
+        gameCanvasRef,
         handleStartGame,
         handlePauseGame,
         handleResumeGame,

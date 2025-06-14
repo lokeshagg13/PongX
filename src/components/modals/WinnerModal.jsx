@@ -18,7 +18,7 @@ function WinnerModal() {
         <GameInstructions expanded={false} />
 
         {/* Game Form and Control */}
-        <GameForm expanded={false} startText="Restart" />
+        <GameForm type="restart" expanded={false} />
       </div>
     </div>
   );

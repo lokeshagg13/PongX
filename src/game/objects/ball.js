@@ -10,13 +10,30 @@ class Ball {
         this.maxVelocity = maxVelocity;
         this.incVelocity = incVelocity;
         this.originalVelocityX = velocityX;
+        this.originalVelocityY = velocityY;
+    }
+
+    static getRandomAngle(minAngle, maxAngle, excluded) {
+        let angle = 0;
+        while (excluded.includes(angle)) {
+            angle = (minAngle + Math.random() * (maxAngle - minAngle)) * (Math.PI / 180);
+        }
+        return angle;
+    }
+
+    static getRandomPosition(minPos, maxPos, excluded) {
+        let pos = (minPos + Math.random() * (maxPos - minPos));
+        while (excluded.includes(pos)) {
+            pos = (minPos + Math.random() * (maxPos - minPos));
+        }
+        return pos;
     }
 
     reset(newX, newY) {
         this.x = newX;
         this.y = newY;
         this.velocityX = -1 * Math.sign(this.velocityX) * Math.abs(this.originalVelocityX);
-        this.velocityY = 0;
+        this.velocityY = this.originalVelocityY;
     }
 
     move() {
