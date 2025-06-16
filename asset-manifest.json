@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.js": "/PongX/static/js/main.12a69130.js",
+    "static/media/header.png": "/PongX/static/media/header.ae25a9eb4ccdef58560f.png",
+    "index.html": "/PongX/index.html",
+    "main.12a69130.js.map": "/PongX/static/js/main.12a69130.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.12a69130.js"
+  ]
+}
