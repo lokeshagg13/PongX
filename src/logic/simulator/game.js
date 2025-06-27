@@ -1,4 +1,4 @@
-import constants from "../../store/constants";
+import gameConfig from "../../logic/gameConfig";
 import NightSky from "../objects/nighSky";
 import Paddle from "../objects/paddle";
 import Ball from "../objects/ball";
@@ -24,11 +24,11 @@ class SimulatorGame {
     }
 
     resizeGameObjects() {
-        const canvasPadding = this.canvas.width * constants.SPACING.PADDING_PERC;
-        const paddleWidth = this.canvas.width * constants.SIZING.PADDLE_WIDTH_PERC;
-        const paddleHeight = this.canvas.height * constants.SIZING.PADDLE_HEIGHT_PERC;
-        const paddleVelocity = this.canvas.height * constants.PADDLE_VELOCITY_PERC;
-        const ballRadius = this.canvas.height * constants.SIZING.BALL_RADIUS_PERC;
+        const canvasPadding = this.canvas.width * gameConfig.PADDLE.SPACING_PERC;
+        const paddleWidth = this.canvas.width * gameConfig.PADDLE.WIDTH_PERC;
+        const paddleHeight = this.canvas.height * gameConfig.PADDLE.HEIGHT_PERC;
+        const paddleVelocity = this.canvas.height * gameConfig.PADDLE.VELOCITY_PERC;
+        const ballRadius = this.canvas.height * gameConfig.BALL.RADIUS_PERC;
 
         const leftPaddleX = canvasPadding + paddleWidth / 2;
         const leftPaddleY = this.leftPaddle ?
@@ -38,8 +38,8 @@ class SimulatorGame {
         const rightPaddleY = this.rightPaddle ?
             this.rightPaddle.y * this.rightPaddle.yRatio * this.canvas.height :
             this.canvas.height / 2;
-        const incBallVelocity = constants.SIMULATOR_BALL_VELOCITY_INC_PERC * this.canvas.width;
-        const maxBallVelocity = constants.SIMULATOR_BALL_VELOCITY_MAX_PERC * this.canvas.width;
+        const incBallVelocity = gameConfig.SIMULATOR.BALL.VELOCITY_INC_PERC * this.canvas.width;
+        const maxBallVelocity = gameConfig.SIMULATOR.BALL.VELOCITY_MAX_PERC * this.canvas.width;
         const ballX = this.ball ?
             this.ball.x * this.ball.xRatio * this.canvas.width :
             this.canvas.width / 2;
@@ -48,7 +48,7 @@ class SimulatorGame {
             this.canvas.height / 2;
         const ballInitAngle = Ball.getRandomAngle(-30, 30, [0]);
         const ballInitDirection = Math.random() < 0.5 ? 1 : -1;
-        const ballInitVelocity = constants.SIMULATOR_BALL_VELOCITY_X_PERC * this.canvas.width;
+        const ballInitVelocity = gameConfig.SIMULATOR.BALL.VELOCITY_X_PERC * this.canvas.width;
         const ballInitVelocityX = ballInitDirection * Math.abs(
             Math.cos(ballInitAngle) * ballInitVelocity
         );
@@ -126,7 +126,7 @@ class SimulatorGame {
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.leftPaddle.y - this.ball.y;
-                    const reductionFactor = (this.leftPaddle.height / 2) / (constants.BALL_VELOCITY_Y_PERC * this.canvas.height);
+                    const reductionFactor = (this.leftPaddle.height / 2) / (gameConfig.BALL.VELOCITY_Y_PERC * this.canvas.height);
                     this.ball.velocityY = -1 * differenceInY / reductionFactor;
                 }
             }
@@ -148,7 +148,7 @@ class SimulatorGame {
 
                     // Displacement between paddle's center and ball's y coordinate
                     const differenceInY = this.rightPaddle.y - this.ball.y;
-                    const reductionFactor = (this.rightPaddle.height / 2) / (constants.BALL_VELOCITY_Y_PERC * this.canvas.height);
+                    const reductionFactor = (this.rightPaddle.height / 2) / (gameConfig.BALL.VELOCITY_Y_PERC * this.canvas.height);
                     this.ball.velocityY = -1 * differenceInY / reductionFactor;
                 }
             }

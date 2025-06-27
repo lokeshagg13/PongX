@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import GameContext from "../../../store/gameContext";
-import constants from "../../../store/constants";
+import gameConfig from "../../../logic/gameConfig";
 import DropdownIcon from "../../ui/DropdownIcon";
 import SimulatorContext from "../../../store/simulatorContext";
 
@@ -101,7 +101,7 @@ function GameForm({ type = "start", expanded = false }) {
                 value={gameType}
                 onChange={(e) => setGameType(e.target.value)}
               >
-                {constants.GAME_TYPES.map((type) => (
+                {gameConfig.GAME_TYPES.map((type) => (
                   <option value={type} key={type}>
                     {type === "u/vs/b"
                       ? "User v/s Bot"

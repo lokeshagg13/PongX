@@ -48,7 +48,7 @@ function GameConsole() {
 
   return (
     <div
-      className={`flex w-full ${
+      className={`flex w-full max-w-1000px ${
         gameContext.gameType === "b/vs/b" ? "justify-end" : "justify-between"
       }`}
     >

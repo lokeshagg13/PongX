@@ -1,7 +1,7 @@
 import { createContext, useRef, useState } from "react";
 
 import { initGame } from "../logic/gameLoop";
-import constants from "./constants";
+import gameConfig from "../logic/gameConfig";
 
 const GameContext = createContext({
     gameStatus: null,
@@ -25,7 +25,7 @@ const GameContext = createContext({
 export function GameContextProvider(props) {
     const [gameStatus, setGameStatus] = useState(null);
     const [countdownRunning, setCountdownRunning] = useState(false);
-    const [gameType, setGameType] = useState(constants.GAME_TYPES[0]);
+    const [gameType, setGameType] = useState(gameConfig.GAME_TYPES[0]);
     const [leftPlayerName, setLeftPlayerName] = useState("Player 1");
     const [rightPlayerName, setRightPlayerName] = useState("Player 2");
     const [leftPlayerScore, setLeftPlayerScore] = useState(0);
@@ -44,7 +44,7 @@ export function GameContextProvider(props) {
         setWinner(null);
         if (leftName) setLeftPlayerName(leftName);
         if (rightName) setRightPlayerName(rightName);
-        if (gameType && constants.GAME_TYPES.includes(gameType)) setGameType(gameType);
+        if (gameType && gameConfig.GAME_TYPES.includes(gameType)) setGameType(gameType);
         if (endGameFuncRef.current) {
             endGameFuncRef.current();
             endGameFuncRef.current = null;

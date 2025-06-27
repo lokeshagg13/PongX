@@ -2,7 +2,7 @@ import { GenomeBuilder, Population } from "neat-javascript";
 
 import config from "../bot/config";
 import SimulatorGame from "./game";
-import constants from "../../store/constants";
+import gameConfig from "../../logic/gameConfig";
 import { findAverageFitness, findAvgMatchDuration, findBestMatchDuration, saveBestGenome } from "./utils";
 
 let matchDurations = [];
@@ -39,7 +39,7 @@ function movePaddlesAI(genome1, genome2, simulatorGame) {
 function trainAI(genome1, genome2, canvas, isSimulatorRunning, updateLog) {
     return new Promise((resolve) => {
         let simulatorGame = new SimulatorGame(canvas);
-        const frameDuration = 1000 / constants.TARGET_FPS;
+        const frameDuration = 1000 / gameConfig.GAME.TARGET_FPS;
         let startTime = performance.now();
         let lastTime = performance.now();
         let animationFrameId;

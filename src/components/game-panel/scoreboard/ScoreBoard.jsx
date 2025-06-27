@@ -1,14 +1,14 @@
 import { useEffect, useContext } from "react";
 import GameContext from "../../../store/gameContext";
-import constants from "../../../store/constants";
+import gameConfig from "../../../logic/gameConfig";
 
 function ScoreBoard() {
   const gameContext = useContext(GameContext);
 
   useEffect(() => {
-    if (gameContext.leftPlayerScore >= constants.WINNING_SCORE)
+    if (gameContext.leftPlayerScore >= gameConfig.GAME.WINNING_SCORE)
       gameContext.handleEndGame("left");
-    if (gameContext.rightPlayerScore >= constants.WINNING_SCORE)
+    if (gameContext.rightPlayerScore >= gameConfig.GAME.WINNING_SCORE)
       gameContext.handleEndGame("right");
     // eslint-disable-next-line
   }, [gameContext.leftPlayerScore, gameContext.rightPlayerScore]);

@@ -1,4 +1,4 @@
-import constants from "../store/constants";
+import gameConfig from "./gameConfig";
 import Countdown from "./objects/countdown";
 import Game from "./game";
 
@@ -14,7 +14,7 @@ function handleKeyDown(e) {
     if (e.key in game.keyState) {
         e.preventDefault();
         game.keyState[e.key] = true;
-        game.buttonState[constants.KEYS_MAP[e.key]] = false;
+        game.buttonState[gameConfig.KEYS_MAP[e.key]] = false;
     }
 }
 
@@ -30,7 +30,7 @@ function handleKeyUp(e) {
 export function movePaddle(whichPaddle = "left", direction = "up") {
     const state = `${whichPaddle}${direction[0].toUpperCase()}${direction.slice(1)}`
     game.buttonState[state] = true;
-    game.keyState[constants.KEYS_MAP[state]] = false;
+    game.keyState[gameConfig.KEYS_MAP[state]] = false;
 }
 
 export function stopPaddle(whichPaddle = "left") {
@@ -46,7 +46,7 @@ export function initGame(gameCanvas, gameType, stateHandlers) {
     });
     const countdown = new Countdown(3);
 
-    const frameDuration = 1000 / constants.TARGET_FPS;
+    const frameDuration = 1000 / gameConfig.GAME.TARGET_FPS;
     let lastTime = performance.now();
     let animationFrameId;
     let isPaused = false;
