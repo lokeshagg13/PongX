@@ -44,10 +44,6 @@ function trainAI(genome1, genome2, canvas, isSimulatorRunning, updateLog) {
         let lastTime = performance.now();
         let animationFrameId;
 
-        function handleResize() {
-            simulatorGame.resizeGameObjects();
-        }
-
         function updateFitness() {
             const matchDuration = (performance.now() - startTime) / 1000; // In seconds
             matchDurations.push(matchDuration);
@@ -62,7 +58,6 @@ function trainAI(genome1, genome2, canvas, isSimulatorRunning, updateLog) {
         function gameLoop(currentTime) {
             if (!isSimulatorRunning()) {
                 cancelAnimationFrame(animationFrameId);
-                window.removeEventListener("resize", handleResize);
                 resolve();
                 return;
             }
@@ -76,7 +71,6 @@ function trainAI(genome1, genome2, canvas, isSimulatorRunning, updateLog) {
                 if (simulatorGame.leftScore >= 1 || simulatorGame.rightScore >= 1 || simulatorGame.leftHits > 50) {
                     updateFitness();
                     cancelAnimationFrame(animationFrameId);
-                    window.removeEventListener("resize", handleResize);
                     resolve();
                     return;
                 }
@@ -84,9 +78,8 @@ function trainAI(genome1, genome2, canvas, isSimulatorRunning, updateLog) {
             }
             animationFrameId = requestAnimationFrame(gameLoop);
         }
-        simulatorGame.resizeGameObjects();
+        simulatorGame.generateAndResizeGameObjects();
         animationFrameId = requestAnimationFrame(gameLoop);
-        window.addEventListener("resize", handleResize);
     });
 }
 

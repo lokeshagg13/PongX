@@ -1,28 +1,29 @@
 import { useEffect, useContext } from "react";
+import gameConfig from "../../../logic/gameConfig";
 import GameContext from "../../../store/gameContext";
+
+const { RES_WIDTH_PERC, RES_HEIGHT_PERC, MAX_RES_WIDTH, MAX_RES_HEIGHT } =
+  gameConfig.GAME_CANVAS;
 
 function GameCanvas() {
   const gameContext = useContext(GameContext);
 
   useEffect(() => {
     const gameCanvas = gameContext.gameCanvasRef.current;
-    const resizeCanvas = () => {
-      gameCanvas.width = Math.min(window.innerWidth * 0.9, 2160);
-      gameCanvas.height = Math.min(window.innerHeight * 0.6, 1180);
-
-      // reset the game
-    };
-    resizeCanvas(); // Initial resize
-    window.addEventListener("resize", () => resizeCanvas()); // Handle window resize
-    return () =>
-      window.removeEventListener("resize", () => resizeCanvas(false));
-    // eslint-disable-next-line
-  }, []);
+    gameCanvas.width = Math.min(
+      window.innerWidth * RES_WIDTH_PERC,
+      MAX_RES_WIDTH
+    );
+    gameCanvas.height = Math.min(
+      window.innerHeight * RES_HEIGHT_PERC,
+      MAX_RES_HEIGHT
+    );
+  }, [gameContext.gameCanvasRef]);
 
   return (
     <div className="canvas-wrapper">
       <canvas
-        id="main-canvas"
+        id="gameCanvas"
         ref={gameContext.gameCanvasRef}
         className="game-canvas"
       />

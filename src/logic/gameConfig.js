@@ -2,8 +2,12 @@ const config = {
     GAME: {
         TARGET_FPS: 60,
         WINNING_SCORE: 5,
-        ASPECT_RATIO: 1.48,
-        RES_HEIGHT: 1180,
+    },
+    GAME_CANVAS: {
+        RES_WIDTH_PERC: 0.9,    // w.r.t window width
+        RES_HEIGHT_PERC: 0.6,    // w.r.t window height
+        MAX_RES_WIDTH: 2160,
+        MAX_RES_HEIGHT: 1180,
     },
     PADDLE: {
         WIDTH_PERC: 0.02,

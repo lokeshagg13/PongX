@@ -1,26 +1,29 @@
 import { useContext, useEffect } from "react";
+import gameConfig from "../../logic/gameConfig";
 import SimulatorContext from "../../store/simulatorContext";
+
+const { RES_WIDTH_PERC, RES_HEIGHT_PERC, MAX_RES_WIDTH, MAX_RES_HEIGHT } =
+  gameConfig.GAME_CANVAS;
 
 function SimulatorCanvas() {
   const simulatorContext = useContext(SimulatorContext);
 
   useEffect(() => {
     const simulatorCanvas = simulatorContext.simulatorCanvasRef.current;
-    const resizeCanvas = () => {
-      simulatorCanvas.width = Math.min(window.innerWidth * 0.9, 2160);
-      simulatorCanvas.height = Math.min(window.innerHeight * 0.6, 1180);
-    };
-    resizeCanvas(); // Initial resize
-    window.addEventListener("resize", () => resizeCanvas()); // Handle window resize
-    return () =>
-      window.removeEventListener("resize", () => resizeCanvas(false));
-    // eslint-disable-next-line
-  }, []);
+    simulatorCanvas.width = Math.min(
+      window.innerWidth * RES_WIDTH_PERC,
+      MAX_RES_WIDTH
+    );
+    simulatorCanvas.height = Math.min(
+      window.innerHeight * RES_HEIGHT_PERC,
+      MAX_RES_HEIGHT
+    );
+  }, [simulatorContext.simulatorCanvasRef]);
 
   return (
     <div className="canvas-wrapper">
       <canvas
-        id="simulator-canvas"
+        id="simulatorCanvas"
         ref={simulatorContext.simulatorCanvasRef}
         className="game-canvas"
       />

@@ -4,11 +4,6 @@ import Game from "./game";
 
 let game;
 
-// Handle resizing
-function handleResize() {
-    game.resizeGameObjects();
-}
-
 // Handle key press
 function handleKeyDown(e) {
     if (e.key in game.keyState) {
@@ -64,10 +59,9 @@ export function initGame(gameCanvas, gameType, stateHandlers) {
             }
         }
 
-        game.resizeGameObjects();
+        game.generateAndResizeGameObjects();
         animationFrameId = requestAnimationFrame(gameLoop);
 
-        window.addEventListener("resize", handleResize);
         window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
     }
@@ -96,7 +90,6 @@ export function initGame(gameCanvas, gameType, stateHandlers) {
         if (!isPaused) {
             isPaused = true;
             cancelAnimationFrame(animationFrameId);
-            window.removeEventListener("resize", handleResize);
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         }
@@ -114,7 +107,6 @@ export function initGame(gameCanvas, gameType, stateHandlers) {
     // End Game
     function endGame() {
         cancelAnimationFrame(animationFrameId);
-        window.removeEventListener("resize", handleResize);
         window.removeEventListener("keydown", handleKeyDown);
         window.removeEventListener("keyup", handleKeyUp);
     }

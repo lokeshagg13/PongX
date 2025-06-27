@@ -1,10 +1,9 @@
 import gameConfig from "../gameConfig";
 
 class Paddle {
-    constructor(x, y, yRatio, width, height, velocity, fillColor = gameConfig.COLORS.WHITE, strokeColor = gameConfig.COLORS.BLACK) {
+    constructor(x, y, width, height, velocity, fillColor = gameConfig.COLORS.WHITE, strokeColor = gameConfig.COLORS.BLACK) {
         this.x = x;  // x coord of center of mass of the paddle
         this.y = y;  // y coord of center of mass of the paddle
-        this.yRatio = yRatio;  // y divided by canvas height for y adjustment
         this.width = width;
         this.height = height;
         this.velocity = velocity;

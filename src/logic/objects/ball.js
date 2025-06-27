@@ -1,9 +1,7 @@
 class Ball {
-    constructor(x, y, xRatio, yRatio, radius, velocityX, velocityY, incVelocity, maxVelocity) {
+    constructor(x, y, radius, velocityX, velocityY, incVelocity, maxVelocity) {
         this.x = x;
         this.y = y;
-        this.xRatio = xRatio;
-        this.yRatio = yRatio;
         this.radius = radius;
         this.velocityX = velocityX;
         this.velocityY = velocityY;
