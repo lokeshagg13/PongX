@@ -66,6 +66,51 @@
     }
   }
 
+  @keyframes shake-animation {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    75% {
+      transform: translateX(-5px);
+    }
+  }
+
+  .shake {
+    animation: shake-animation 0.4s ease-in-out;
+  }
+
+  .rotate-0 {
+    transform: rotate(0deg);
+    transition: transform 0.5s ease;
+  }
+
+  .rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.5s ease;
+  }
+
+  .fade-in {
+    animation: fadeInTop 0.5s ease forwards;
+  }
+
+  @keyframes fadeInTop {
+    from {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* #region - For Game Form Component */
   .game-form .control-btn {
     display: inline-block;
@@ -80,11 +125,13 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
-  .game-form .control-btn.start-game-btn, .game-form .control-btn.quit-btn {
+  .game-form .control-btn.start-game-btn,
+  .game-form .control-btn.quit-btn {
     background-color: #2980b9;
   }
 
-  .game-form .control-btn.start-game-btn:hover, .game-form .control-btn.quit-btn:hover {
+  .game-form .control-btn.start-game-btn:hover,
+  .game-form .control-btn.quit-btn:hover {
     background-color: #1f6391;
     transform: scale(1.05);
   }
@@ -504,48 +551,28 @@
   }
   /* #endregion */
 
-  @keyframes shake-animation {
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(-5px);
-    }
-    50% {
-      transform: translateX(5px);
-    }
-    75% {
-      transform: translateX(-5px);
-    }
+  /* #region - Footer */
+  .footer {
+    background: black;
+    color: white;
+    padding: 1rem;
+    width: 100%;
+    position: relative;
   }
 
-  .shake {
-    animation: shake-animation 0.4s ease-in-out;
+  .footer-content {
+    text-align: center;
+    width: 100%;
   }
 
-  .rotate-0 {
-    transform: rotate(0deg);
-    transition: transform 0.5s ease;
+  .footer-text {
+    font-size: 0.875rem;
+    text-align: center;
+    color: #ccc;
   }
 
-  .rotate-180 {
-    transform: rotate(180deg);
-    transition: transform 0.5s ease;
+  .footer-name {
+    color: #bb86fc;
   }
-
-  .fade-in {
-    animation: fadeInTop 0.5s ease forwards;
-  }
-
-  @keyframes fadeInTop {
-    from {
-      opacity: 0;
-      transform: translateY(-50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  /* #endregion */
 }
