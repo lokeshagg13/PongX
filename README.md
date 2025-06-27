@@ -1,7 +1,3 @@
-Here's your visually enhanced README with emojis and formatting:
-
----
-
 # 🏓 **PONGX: The Ultimate Ping Pong Game** 🎮
 
 Welcome to **PONGX**, a feature-rich, multi-mode ping pong game offering endless excitement! Whether you’re ready for a face-off, want to challenge AI, or prefer to watch bots battle, **PONGX** has got you covered!
